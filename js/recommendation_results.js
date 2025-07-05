@@ -5,54 +5,48 @@ document.addEventListener("DOMContentLoaded", () => {
   const searchInput = searchForm?.querySelector("input[type='text']");
   const container = document.getElementById("recommendation-container");
 
+  // Standardhinweis: Noch keine Suche durchgeführt
+  container.innerHTML = "<p>Bitte geben Sie ein Suchwort ein und klicken Sie auf 'Search'.</p>";
+
   fetch("../apis/travel_recommendation_api.json")
     .then((res) => res.json())
     .then((data) => {
-      // Städte aus Ländern sammeln
       data.countries?.forEach((country) => {
         country.cities?.forEach((city) => allRecommendations.push(city));
       });
 
-      // Tempel & Strände sammeln
       allRecommendations.push(...(data.temples || []));
       allRecommendations.push(...(data.beaches || []));
-
-      render(allRecommendations);
     });
 
-  // 🔍 Suche nach Eingabe
   searchForm?.addEventListener("submit", (e) => {
     e.preventDefault();
+    console.log("Form submitted");
     const query = searchInput?.value.trim().toLowerCase();
-
     if (!query) {
-      render(allRecommendations);
+      container.innerHTML = "<p>Bitte gib ein Stichwort ein.</p>";
       return;
     }
 
-    const filtered = allRecommendations.filter((item) => {
-      return (
-        item.name?.toLowerCase().includes(query) ||
-        item.description?.toLowerCase().includes(query)
-      );
-    });
+    const filtered = allRecommendations.filter((item) =>
+      item.name?.toLowerCase().includes(query) ||
+      item.description?.toLowerCase().includes(query)
+    );
+
+    if (filtered.length === 0) {
+      container.innerHTML = "<p>Keine passenden Reiseziele gefunden.</p>";
+      return;
+    }
 
     render(filtered);
   });
 
-  // 🔄 Reset-Button
   searchForm?.querySelector("input[type='reset']")?.addEventListener("click", () => {
-    render(allRecommendations);
+    container.innerHTML = "<p>Bitte geben Sie ein Suchwort ein und klicken Sie auf 'Search'.</p>";
   });
 
-  // ✨ Darstellung der Empfehlungen
   function render(list) {
     container.innerHTML = "";
-
-    if (!list.length) {
-      container.innerHTML = "<p>Keine passenden Reiseziele gefunden.</p>";
-      return;
-    }
 
     list.forEach((item) => {
       const card = document.createElement("div");

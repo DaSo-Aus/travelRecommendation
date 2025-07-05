@@ -5,7 +5,7 @@ const isTravelPage = window.location.pathname.endsWith("index.html");
 const fragment = document.createDocumentFragment();
 
 // Haupt-Navigation laden
-fetch("components/navbar-main.html")
+fetch("../components/navbar-main.html")
   .then(response => {
     if (!response.ok) throw new Error("Fehler beim Laden der Haupt-Navigation");
     return response.text();
@@ -17,7 +17,7 @@ fetch("components/navbar-main.html")
 
     if (isTravelPage) {
       // Falls index.html→ auch Suchleiste laden
-      fetch("components/navbar-search.html")
+      fetch("../components/navbar-search.html")
         .then(response => {
           if (!response.ok) throw new Error("Fehler beim Laden der Suchleiste");
           return response.text();
