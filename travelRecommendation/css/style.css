@@ -1,3 +1,4 @@
+/* === Grundlayout === */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -5,51 +6,76 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    height: auto;
     color: white;
 }
 
+/* === Navbar Container === */
 .navbar {
-    background-color: #f2f2f2;
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
     justify-content: space-between;
+    align-items: center;
+    background-color: #f2f2f2;
     padding: 10px 20px;
+    gap: 20px;
+    color: white; /* Standard-Schriftfarbe */
 }
-.navbar .logo {
+
+/* === Linker Teil: Logo + Navigation === */
+.nav-left {
     display: flex;
     align-items: center;
+    gap: 30px;
+    color: white;
+}
+
+.nav-left .logo {
     font-weight: bold;
     font-size: 20px;
+    display: flex;
+    align-items: center;
+    color: white;
 }
-.navbar .logo::before {
+
+.nav-left .logo::before {
     content: "✈️";
     margin-right: 8px;
 }
-.navbar .nav-links {
-    flex-grow: 1;
+
+.nav-left .nav-links {
     text-align: center;
 }
-.navbar .nav-links a {
+
+.nav-left .nav-links a {
     margin: 0 15px;
     text-decoration: none;
-    color: #333;
+    color: white;
     font-weight: bold;
 }
-.navbar .search-bar {
+
+/* === Rechter Teil: Suchleiste === */
+.search-bar {
     display: flex;
     align-items: center;
 }
-.navbar input[type="text"] {
+
+.search-bar input[type="text"] {
     padding: 5px;
     margin-right: 5px;
-}
-.navbar input[type="submit"],
-.navbar input[type="reset"] {
-    padding: 5px 10px;
-    margin-left: 2px;
+    color: #333;
 }
 
+.search-bar input[type="submit"],
+.search-bar input[type="reset"] {
+    padding: 5px 10px;
+    margin-left: 2px;
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+/* === Hero Section === */
 .hero {
     text-align: center;
     padding: 100px 20px;
@@ -77,11 +103,12 @@ body {
     cursor: pointer;
 }
 
+/* === About Section Overlay === */
 .about-overlay {
     background-color: rgba(0, 0, 0, 0.6);
     padding: 40px;
-    max-width: auto;
     border-radius: 8px;
+    max-width: auto;
 }
 
 .about-overlay h1 {
@@ -94,6 +121,7 @@ body {
     line-height: 1.6;
 }
 
+/* === Team Section === */
 .team-section {
     padding: 60px 20px;
     text-align: center;
@@ -120,8 +148,9 @@ body {
     flex-shrink: 0;
 }
 
+/* === Kontaktbereich === */
 .contact-hero {
-    background-image: url('../assets/city-bg.jpg'); /* dein Stadtbild */
+    background-image: url('../assets/city-bg.jpg');
     background-size: cover;
     background-position: center;
     height: 100vh;
