@@ -1,11 +1,11 @@
 const navbarElement = document.getElementById("navbar-placeholder");
-const isTravelPage = window.location.pathname.endsWith("travel_recommendation.html");
+const isTravelPage = window.location.pathname.endsWith("index.html");
 
 // Leeres Wrapper-DIV zum Kombinieren beider Module vorbereiten
 const fragment = document.createDocumentFragment();
 
 // Haupt-Navigation laden
-fetch("../components/navbar-main.html")
+fetch("components/navbar-main.html")
   .then(response => {
     if (!response.ok) throw new Error("Fehler beim Laden der Haupt-Navigation");
     return response.text();
@@ -16,8 +16,8 @@ fetch("../components/navbar-main.html")
     fragment.appendChild(mainDiv.firstElementChild);
 
     if (isTravelPage) {
-      // Falls travel_recommendation.html → auch Suchleiste laden
-      fetch("../components/navbar-search.html")
+      // Falls index.html→ auch Suchleiste laden
+      fetch("components/navbar-search.html")
         .then(response => {
           if (!response.ok) throw new Error("Fehler beim Laden der Suchleiste");
           return response.text();

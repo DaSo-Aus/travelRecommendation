@@ -138,7 +138,8 @@ body {
 }
 
 .team-member {
-    background-color: rgba(255, 255, 255, 0.5)    color: #333;
+    background-color: rgba(255, 255, 255, 0.5)    
+    color: #333;
     padding: 20px;
     border-radius: 8px;
     width: 100px;
@@ -196,3 +197,30 @@ body {
     cursor: pointer;
     border-radius: 4px;
 }
+
+img.destination {
+    width: 300px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    margin: 10px;
+  }
+  
+  .recommendation-card {
+    width: 300px;
+    margin: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    padding: 10px;
+    background-color: #fff;
+  }
+  
+  .recommendation-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+  
