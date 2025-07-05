@@ -1,10 +1,8 @@
 const navbarElement = document.getElementById("navbar-placeholder");
 const isTravelPage = window.location.pathname.endsWith("index.html");
 
-// Leeres Wrapper-DIV zum Kombinieren beider Module vorbereiten
 const fragment = document.createDocumentFragment();
 
-// Haupt-Navigation laden
 fetch("../components/navbar-main.html")
   .then(response => {
     if (!response.ok) throw new Error("Fehler beim Laden der Haupt-Navigation");
@@ -16,7 +14,7 @@ fetch("../components/navbar-main.html")
     fragment.appendChild(mainDiv.firstElementChild);
 
     if (isTravelPage) {
-      // Falls index.html→ auch Suchleiste laden
+      // ➕ Suchleiste laden
       fetch("../components/navbar-search.html")
         .then(response => {
           if (!response.ok) throw new Error("Fehler beim Laden der Suchleiste");
@@ -26,10 +24,13 @@ fetch("../components/navbar-main.html")
           const searchDiv = document.createElement("div");
           searchDiv.innerHTML = searchHTML;
           fragment.appendChild(searchDiv.firstElementChild);
-          navbarElement.appendChild(fragment); // Beide Teile gemeinsam anhängen
+          navbarElement.appendChild(fragment);
+
+          // 🧠 Jetzt ist Suchleiste im DOM – Event-Listener setzen
+          initSearchHandlers();
         });
     } else {
-      navbarElement.appendChild(fragment); // Nur Main-Teil anhängen
+      navbarElement.appendChild(fragment);
     }
   })
   .catch(error => {

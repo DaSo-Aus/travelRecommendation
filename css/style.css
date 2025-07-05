@@ -1,4 +1,4 @@
-/* === Grundlayout === */
+/* === Globales Grundlayout === */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -6,11 +6,14 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    background-attachment: fixed;
     color: white;
-}
-
-/* === Navbar Container === */
-.navbar {
+    min-height: 100vh;
+  }
+  
+  
+  /* === Navigationsbereich === */
+  .navbar {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -18,193 +21,107 @@ body {
     background-color: #000000;
     padding: 10px 20px;
     gap: 20px;
-    color: rgb(255, 255, 255); /* Standard-Schriftfarbe */
-}
-
-/* === Linker Teil: Logo + Navigation === */
-.nav-left {
+    color: #fff;
+  }
+  
+  /* Linker Teil: Logo + Navigation */
+  .nav-left {
     display: flex;
     align-items: center;
     gap: 30px;
     color: white;
-}
-
-.nav-left .logo {
+  }
+  
+  .nav-left .logo {
     font-weight: bold;
     font-size: 20px;
     display: flex;
     align-items: center;
     color: white;
-}
-
-.nav-left .logo::before {
+  }
+  
+  .nav-left .logo::before {
     content: "✈️";
     margin-right: 8px;
-}
-
-.nav-left .nav-links {
+  }
+  
+  .nav-left .nav-links {
     text-align: center;
-}
-
-.nav-left .nav-links a {
+  }
+  
+  .nav-left .nav-links a {
     margin: 0 15px;
     text-decoration: none;
     color: white;
     font-weight: bold;
-}
-
-/* === Rechter Teil: Suchleiste === */
-.search-bar {
+  }
+  
+  /* Rechter Teil: Suchleiste */
+  .search-bar {
     display: flex;
     align-items: center;
-}
-
-.search-bar input[type="text"] {
+  }
+  
+  .search-bar input[type="text"] {
     padding: 5px;
     margin-right: 5px;
     color: #333;
-}
-
-.search-bar input[type="submit"],
-.search-bar input[type="reset"] {
+  }
+  
+  .search-bar input[type="submit"],
+  .search-bar input[type="reset"] {
     padding: 5px 10px;
     margin-left: 2px;
     background-color: #333;
     color: white;
     border: none;
     cursor: pointer;
-}
-
-/* === Hero Section === */
-.hero {
-    text-align: center;
+  }
+  
+  /* === Hauptinhaltsbereich (Hero + Empfehlungen) === */
+  .main-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 40px 20px;
+    gap: 40px;
+  }
+  
+  /* Hero-Block (linke Seite) */
+  .hero {
+    flex: 1;
+    max-width: 50%;
+    text-align: left;
     padding: 100px 20px;
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
-.hero h1 {
+  }
+  
+  .hero h1 {
     font-size: 48px;
     margin-bottom: 20px;
-}
-
-.hero p {
+  }
+  
+  .hero p {
     font-size: 18px;
     max-width: 700px;
     margin: 0 auto 30px;
     line-height: 1.5;
-}
-
-.hero button {
+  }
+  
+  .hero button {
     padding: 10px 25px;
     font-size: 16px;
     font-weight: bold;
     background-color: #ffcc00;
     border: none;
     cursor: pointer;
-}
-
-/* === About Section Overlay === */
-.about-overlay {
-    background-color: rgba(0, 0, 0, 0.6);
-    padding: 40px;
-    border-radius: 8px;
-    max-width: auto;
-}
-
-.about-overlay h1 {
-    font-size: 36px;
-    margin-bottom: 20px;
-}
-
-.about-overlay p {
-    font-size: 18px;
-    line-height: 1.6;
-}
-
-/* === Team Section === */
-.team-section {
-    padding: 60px 20px;
-    text-align: center;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.team-grid {
+  }
+  
+  /* Empfehlungsliste (rechte Seite) */
+  .recommendation-list {
+    flex: 1;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 40px;
-    padding: 20px;
-}
-
-.team-member {
-    background-color: rgba(255, 255, 255, 0.5)    
-    color: #333;
-    padding: 20px;
-    border-radius: 8px;
-    width: 100px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    text-align: center;
-    flex-shrink: 0;
-}
-
-/* === Kontaktbereich === */
-.contact-hero {
-    background-image: url('../assets/city-bg.jpg');
-    background-size: cover;
-    background-position: center;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    color: white;
-    text-align: center;
-}
-
-.contact-overlay {
-    background-color: rgba(0, 0, 0, 0.6);
-    padding: 40px;
-    border-radius: 8px;
-    width: 90%;
-    max-width: 500px;
-}
-
-.contact-overlay h1 {
-    font-size: 36px;
-    margin-bottom: 20px;
-}
-
-.contact-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.contact-form input,
-.contact-form textarea {
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-}
-
-.contact-form button {
-    padding: 10px;
-    background-color: #ffcc00;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-img.destination {
-    width: 300px;
-    height: auto;
-    object-fit: cover;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    margin: 10px;
   }
   
   .recommendation-card {
@@ -215,12 +132,112 @@ img.destination {
     text-align: center;
     padding: 10px;
     background-color: #fff;
+    color: #222;
   }
   
-  .recommendation-image {
+  .recommendation-image,
+  img.destination {
     width: 100%;
     height: auto;
     object-fit: cover;
     border-radius: 6px;
+  }
+  
+  img.destination {
+    width: 300px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    margin: 10px;
+  }
+  
+  /* === About Section === */
+  .about-overlay {
+    padding: 40px;
+    border-radius: 8px;
+    max-width: auto;
+  }
+  
+  .about-overlay h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+  }
+  
+  .about-overlay p {
+    font-size: 18px;
+    line-height: 1.6;
+  }
+  
+  /* === Team Section === */
+  .team-section {
+    padding: 60px 20px;
+    text-align: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .team-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+    padding: 20px;
+  }
+  
+  .team-member {
+    background-color: rgba(255, 255, 255, 0.5);
+    color: #333;
+    padding: 20px;
+    border-radius: 8px;
+    width: 100px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    flex-shrink: 0;
+  }
+  
+  /* === Kontaktbereich === */
+  .contact-hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    color: white;
+    text-align: center;
+  }
+  
+  .contact-overlay {
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 40px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+  }
+  
+  .contact-overlay h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+  }
+  
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .contact-form input,
+  .contact-form textarea {
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .contact-form button {
+    padding: 10px;
+    background-color: #ffcc00;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
   }
   

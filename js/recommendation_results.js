@@ -1,64 +1,172 @@
-let allRecommendations = [];
+const recommendationContainer = document.getElementById("recommendation-container");
 
-document.addEventListener("DOMContentLoaded", () => {
-  const searchForm = document.querySelector(".search-bar form");
-  const searchInput = searchForm?.querySelector("input[type='text']");
-  const container = document.getElementById("recommendation-container");
+// 🔎 Suchfunktion aktivieren – wird nach dem Laden der Suchleiste aufgerufen
+function initSearchHandlers() {
+  const searchInput = document.querySelector('.search-bar input[type="text"]');
+  const searchButton = document.querySelector('.search-bar input[type="submit"]');
+  const clearButton = document.querySelector('.search-bar input[type="reset"]');
 
-  // Standardhinweis: Noch keine Suche durchgeführt
-  container.innerHTML = "<p>Bitte geben Sie ein Suchwort ein und klicken Sie auf 'Search'.</p>";
-
-  fetch("../apis/travel_recommendation_api.json")
-    .then((res) => res.json())
-    .then((data) => {
-      data.countries?.forEach((country) => {
-        country.cities?.forEach((city) => allRecommendations.push(city));
-      });
-
-      allRecommendations.push(...(data.temples || []));
-      allRecommendations.push(...(data.beaches || []));
+  if (searchButton && searchInput && clearButton) {
+    searchButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      const keyword = searchInput.value.trim().toLowerCase();
+      if (!keyword) return;
+      showRecommendations(keyword);
     });
 
-  searchForm?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    console.log("Form submitted");
-    const query = searchInput?.value.trim().toLowerCase();
-    if (!query) {
-      container.innerHTML = "<p>Bitte gib ein Stichwort ein.</p>";
-      return;
-    }
-
-    const filtered = allRecommendations.filter((item) =>
-      item.name?.toLowerCase().includes(query) ||
-      item.description?.toLowerCase().includes(query)
-    );
-
-    if (filtered.length === 0) {
-      container.innerHTML = "<p>Keine passenden Reiseziele gefunden.</p>";
-      return;
-    }
-
-    render(filtered);
-  });
-
-  searchForm?.querySelector("input[type='reset']")?.addEventListener("click", () => {
-    container.innerHTML = "<p>Bitte geben Sie ein Suchwort ein und klicken Sie auf 'Search'.</p>";
-  });
-
-  function render(list) {
-    container.innerHTML = "";
-
-    list.forEach((item) => {
-      const card = document.createElement("div");
-      card.classList.add("recommendation-card");
-
-      card.innerHTML = `
-        <img src="${item.imageUrl}" alt="Bild von ${item.name}" class="recommendation-image" />
-        <h3>${item.name}</h3>
-        <p>${item.description}</p>
-      `;
-
-      container.appendChild(card);
+    clearButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      searchInput.value = "";
+      recommendationContainer.innerHTML = "";
     });
   }
-});
+}
+
+// 🔄 JSON-Daten laden
+let travelData = null;
+
+fetch("../apis/travel_recommendation_api.json")
+  .then(response => {
+    if (!response.ok) throw new Error("Fehler beim Laden der JSON-Daten");
+    return response.json();
+  })
+  .then(data => {
+    travelData = data;
+    console.log("Empfehlungsdaten geladen:", data);
+  })
+  .catch(error => console.error("Datenladefehler:", error));
+
+// 📍 Empfehlungen anzeigen basierend auf flexibler Übereinstimmung
+function showRecommendations(keyword) {
+  recommendationContainer.innerHTML = "";
+  if (!travelData) return;
+
+  const results = [];
+
+  // 🔍 Länder + Städte durchsuchen (flexibles Matching)
+  travelData.countries.forEach(country => {
+    const countryNameLower = country.name.toLowerCase();
+
+    if (countryNameLower.includes(keyword)) {
+      results.push(...country.cities.map(city => ({
+        name: city.name,
+        imageUrl: city.imageUrl,
+        description: city.description,
+        timezone: getTimezoneByCountry(country.name)
+      })));
+    } else {
+      country.cities.forEach(city => {
+        if (city.name.toLowerCase().includes(keyword)) {
+          results.push({
+            name: city.name,
+            imageUrl: city.imageUrl,
+            description: city.description,
+            timezone: getTimezoneByCountry(country.name)
+          });
+        }
+      });
+    }
+  });
+
+  // 🔍 Tempel durchsuchen
+  travelData.temples.forEach(temple => {
+    const nameLower = temple.name.toLowerCase();
+    if (
+      nameLower.includes(keyword) ||
+      keyword === "temple" ||
+      keyword === "temples"
+    ) {
+      results.push({
+        name: temple.name,
+        imageUrl: temple.imageUrl,
+        description: temple.description
+      });
+    }
+  });
+
+  // 🔍 Strände durchsuchen
+  travelData.beaches.forEach(beach => {
+    const nameLower = beach.name.toLowerCase();
+    if (
+      nameLower.includes(keyword) ||
+      keyword === "beach" ||
+      keyword === "beaches"
+    ) {
+      results.push({
+        name: beach.name,
+        imageUrl: beach.imageUrl,
+        description: beach.description
+      });
+    }
+  });
+
+  // ❌ Kein Ergebnis
+  if (results.length === 0) {
+    const card = document.createElement("div");
+    card.className = "recommendation-card";
+
+    const title = document.createElement("h3");
+    title.textContent = "No results found";
+
+    const desc = document.createElement("p");
+    desc.textContent = "Try another keyword like 'Australia', 'Angkor Wat', or 'Beach'.";
+
+    card.appendChild(title);
+    card.appendChild(desc);
+    recommendationContainer.appendChild(card);
+    return;
+  }
+
+  // ✅ Ergebnisse anzeigen
+  results.forEach(destination => {
+    const card = document.createElement("div");
+    card.className = "recommendation-card";
+
+    if (destination.imageUrl) {
+      const img = document.createElement("img");
+      img.src = destination.imageUrl;
+      img.alt = destination.name;
+      img.className = "recommendation-image";
+      card.appendChild(img);
+    }
+
+    const title = document.createElement("h3");
+    title.textContent = destination.name;
+
+    const desc = document.createElement("p");
+    desc.textContent = destination.description;
+
+    card.appendChild(title);
+    card.appendChild(desc);
+
+    if (destination.timezone) {
+      const timeElement = document.createElement("p");
+      timeElement.style.fontSize = "0.9em";
+      timeElement.style.color = "#333";
+      const now = new Date().toLocaleTimeString('en-US', {
+        timeZone: destination.timezone,
+        hour12: true,
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
+      });
+      timeElement.textContent = `Current time: ${now}`;
+      card.appendChild(timeElement);
+    }
+
+    recommendationContainer.appendChild(card);
+  });
+}
+
+// 🌍 Zeitzonenzuordnung
+function getTimezoneByCountry(countryName) {
+  const zones = {
+    "Australia": "Australia/Sydney",
+    "Japan": "Asia/Tokyo",
+    "Brazil": "America/Sao_Paulo",
+    "India": "Asia/Kolkata",
+    "Cambodia": "Asia/Phnom_Penh",
+    "French Polynesia": "Pacific/Tahiti"
+  };
+  return zones[countryName] || null;
+}
